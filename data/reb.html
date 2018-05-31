@@ -1,0 +1,57 @@
+<!DOCTYPE html> 
+ <html> 
+ <title>W3.CSS</title> 
+ <meta name="viewport" content="width=device-width, initial-scale=1"> 
+<style>
+#myBar {
+  width: 1%;
+  height: 30px;
+  background-color: #ED7014;
+  
+}
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+</style>
+ <body> 
+ <p> 
+   <div class="w3-light-grey"> 
+  <div id="myBar" class="w3-container w3-round w3-blue" style="height:24px;width:0"></div> 
+   </div> 
+   <br> 
+   <button class="button"  id="yo" disabled ><a href="/">Go home</a></button>  
+ </div> 
+ <script> 
+ function move() { 
+   var elem = document.getElementById("myBar");    
+   var width = 1; 
+   var id = setInterval(frame, 10); 
+   function frame() { 
+     if (width >= 100) { 
+       clearInterval(id); 
+       document.getElementById("yo").disabled = false; 
+     } else { 
+       width++;  
+       elem.style.width = width + '%';  
+       elem.innerHTML=width+'%';    
+     } 
+   } 
+ } 
+ window.onload = function() { 
+ move(); 
+ } 
+ </script> 
+ <footer class="w3-container w3-blue" ID="footer"> 
+ <h3></h3> 
+ </footer> 
+ </body> 
+ </html> 

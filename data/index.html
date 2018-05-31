@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<title>W3.CSS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="w3.css">
+		<link rel="stylesheet" href="styles.css">
+		
+<body>
+
+<div class="w3-container w3-light-blue">
+  <p id="SSID">NA</p><p id="uptime"  class="w3-display-topright" style="right:10px">NA</p>
+</div>
+<p>
+
+
+    <button onclick="document.getElementById('id01').style.display='block'"  class="w3-button w3-display-topmiddle w3-xlarge w3-box w3-blue">
+		<svg  width="24" height="24" viewBox="0 0 24 24">
+		<path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/>
+		</svg>
+    </button>
+  <div id="id01" class="w3-modal">
+    <div class="w3-modal-content">
+      <div class="w3-container">
+        <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+<p>
+<form class="w3-container w3-round-large w3-light-gray" action="/rep">
+  <p>
+  <label>SSID:</label>
+  <input type="text" class="w3-input" id="ssid" placeholder="your wifi ID" name="ssid" value="yoyo"></p>
+  <p>
+  <label>Password:</label>
+  <input type="password" class="w3-input" id="password" placeholder="your wifi key" name="password" value="323taay053"></p>
+  <p>
+  <button class="w3-btn w3-round-large w3-blue">Submit</button>
+</form>
+<p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="w3-container">
+  <table class="w3-table-all w3-hoverable">
+	<tr>
+      <td>button1</td>
+      <td>
+	<label class="switch switch-left-right" >
+	<input class="switch-input" id="0" onclick="sendData(0)"  type="checkbox" />
+	<span class="switch-label" data-on="On" data-off="Off"></span> <span class="switch-handle"></span> </label>
+	  </td>
+    </tr>
+    <tr>
+      <td>butoon2</td>
+      <td>
+	<label class="switch switch-left-right" >
+	<input class="switch-input" id="1" onclick="sendData(1)"  type="checkbox" />
+	<span class="switch-label" data-on="On" data-off="Off"></span> <span class="switch-handle"></span> </label>
+		</td>
+    </tr>
+    <tr>
+      <td>button2</td>
+      <td>
+	<label class="switch switch-left-right" >
+	<input class="switch-input" id="2" onclick="sendData(2)"  type="checkbox" />
+	<span class="switch-label" data-on="On" data-off="Off"></span> <span class="switch-handle"></span> </label>
+		</td>
+    </tr>
+    <tr>
+      <td>button4</td>
+      <td>
+	<label class="switch switch-left-right" >
+	<input class="switch-input" id="3" onclick="sendData(3)"  type="checkbox" />
+	<span class="switch-label" data-on="On" data-off="Off"></span> <span class="switch-handle"></span> </label>
+		</td>
+    </tr>
+  </table>
+</div>
+
+
+<p>
+<div id="snackbar">Done ! it is <span id="st">N/A</span></div>
+<footer class="w3-container w3-blue" ID="footer">
+  <h3>Footer</h3>
+</footer>
+
+
+
+<script>
+function sendData(led) {
+	
+	var Lvalue;
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("st").innerHTML =
+      this.responseText;
+
+    }
+  };
+     	if( document.getElementById(led).checked == false){
+		Lvalue=0;
+    } else if( document.getElementById(led).checked==true){
+	 Lvalue=1;
+    }
+  xhttp.open("GET", "setLED?LEDstate="+Lvalue+"&LEDstate1="+led, true);
+  xhttp.send();
+  var x = document.getElementById("snackbar")
+    x.className = "show";
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 300);
+}
+
+setInterval(function() {
+  // Call a function repetatively with 2 Second interval
+
+  getbut1();
+}, 3000); //2000mSeconds update rate
+
+
+window.onload = function() {
+      getbut1();
+}
+function getbut1() {
+var i=0,j=0,l=0 ,x = ["","","","","",""];
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+				for (i in this.responseText) {
+					if(this.responseText[i]==','){
+					j=j+1;
+					}else{
+						x[j] += this.responseText[i];
+				}
+				}
+
+
+		
+	for(l in x){  	
+
+	  if(x[l] == "HIGH"){
+			 document.getElementById(l).checked = true;
+	  }
+	  	 else if(x[l] == "LOW"){
+			 document.getElementById(l).checked = false;
+	  }	
+	}
+	document.getElementById("SSID").innerHTML =x[4];
+    document.getElementById("uptime").innerHTML = msToTime(x[5]); 
+	  
+    }
+  };
+  xhttp.open("GET", "but1?status="+"what", true);
+  xhttp.send();
+}
+
+ function msToTime(duration) {
+        var milliseconds = parseInt((duration%1000)/100)
+            , seconds = parseInt((duration/1000)%60)
+            , minutes = parseInt((duration/(1000*60))%60)
+            , hours = parseInt((duration/(1000*60*60))%24);
+
+        hours = (hours < 10) ? "0" + hours : hours;
+        minutes = (minutes < 10) ? "0" + minutes : minutes;
+        seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+        return "(" +hours + ":" + minutes + ":" + seconds +")";
+    }
+</script>
+
+</body>
+</html>
